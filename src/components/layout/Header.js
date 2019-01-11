@@ -13,7 +13,8 @@ export class Header extends Component {
 }
 
 const linkStyle = {
-  color: '#fff'
+  color: '#fff',
+  textDecoration: 'none'
 }
 
 export default Header

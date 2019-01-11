@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import PropTypes from 'prop-types';
 
 export class AddItem extends Component {
 
@@ -48,6 +49,11 @@ const btnStyle = {
 
 const formStyle = {
     padding: '5px',
+}
+
+// PropTypes
+AddItem.propTypes = {
+  addTodo: propTypes.func.isRequired
 }
 
 export default AddItem

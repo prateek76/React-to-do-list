@@ -5,33 +5,18 @@ import './App.css';
 import Todos from'./components/Todos';
 import AddItem from './components/AddItem';
 import About from './components/pages/About';
-import uuid from 'uuid';
+//import uuid from 'uuid';
+import axios from 'axios';
 
 class App extends Component {
 
   state = {
-    todos: [
-      {
-        id: 1,
-        title: 'AFC asian cup',
-        completed: true
-      },
-      {
-        id: 2,
-        title: 'La liga',
-        completed: false
-      },
-      {
-        id: 3,
-        title: 'Premier league',
-        completed: true
-      },
-      {
-        id: 4,
-        title: 'Uefa champions legue',
-        completed: false
-      }
-    ]
+    todos: []
+  }
+
+  componentDidMount() {
+    axios.get('https://jsonplaceholder.typicode.com/todos?_limit=10')
+    .then(res => this.setState({todos: res.data}))
   }
 
   //toggle todo
@@ -47,20 +32,28 @@ class App extends Component {
 
   //delete Todo
   delTodo = (id) => {
+    axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+    .then(res => this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)] }));
     //console.log(id);
-    this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)] });
+    //this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)] });
   }
 
   //add Todo
   addTodo = (title) => {
     if(title.trim() === "") return;
-    console.log(title);
+
+    axios.post('https://jsonplaceholder.typicode.com/todos', {
+      title,
+      completed: false
+    }).then(res => this.setState({ todos: [...this.state.todos, res.data] }));
+
+    /*console.log(title);
     const newTodo = {
       id: uuid.v4(),
       title,
       completed: false,
     }
-    this.setState({ todos: [...this.state.todos, newTodo] })
+    this.setState({ todos: [...this.state.todos, newTodo] })*/
   }
 
   render() {
