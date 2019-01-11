@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Header from './components/layout/Header';
 import './App.css';
 import Todos from'./components/Todos';
 import AddItem from './components/AddItem';
+import About from './components/pages/About';
+import uuid from 'uuid';
 
 class App extends Component {
 
@@ -44,21 +47,40 @@ class App extends Component {
 
   //delete Todo
   delTodo = (id) => {
-    console.log(id);
+    //console.log(id);
     this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)] });
+  }
+
+  //add Todo
+  addTodo = (title) => {
+    if(title.trim() === "") return;
+    console.log(title);
+    const newTodo = {
+      id: uuid.v4(),
+      title,
+      completed: false,
+    }
+    this.setState({ todos: [...this.state.todos, newTodo] })
   }
 
   render() {
 
     //console.log(this.state.todos);
     return (
-      <div>
-        <Header />
-        <div className="container">
-          <AddItem />
-          <Todos todos={this.state.todos} markComplete={this.markComplete} delTodo={this.delTodo} />
+      <Router>
+        <div>
+          <Header />
+          <Route exact path="/" render={props => (
+            <React.Fragment>
+              <div className="container">
+                <AddItem addTodo={this.addTodo}/>
+                <Todos todos={this.state.todos} markComplete={this.markComplete} delTodo={this.delTodo} />
+              </div>
+            </React.Fragment>
+          )} />
+          <Route path="/about" component={About} />
         </div>
-      </div>
+      </Router>
     );
   }
 }

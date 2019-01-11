@@ -8,15 +8,21 @@ export class AddItem extends Component {
     title: ''
   }
 
+  onSubmit = (e) => {
+    e.preventDefault();
+    this.props.addTodo(this.state.title);
+    this.setState({ title: '' });
+  }
+
   onChange = (e) => {
     this.setState({ title: e.target.value });
-    console.log(e.target.value);
+    //console.log(e.target.value);
   }
 
   render() {
     return (
       <div style={formStyle}>
-        <form style={{display: 'flex'}}>
+        <form onSubmit={this.onSubmit} style={{display: 'flex'}}>
             <TextField 
                 type="text"
                 label="Add Todo"
@@ -36,8 +42,8 @@ export class AddItem extends Component {
 
 const btnStyle = {
     flex: .5,
-    marginTop: '5px',
-    marginBottom: '5px'
+    marginTop: '7px',
+    marginBottom: '7px'
 }
 
 const formStyle = {
